@@ -1,0 +1,124 @@
+# Define os serviços (containers) que farão parte da aplicação.
+services:
+
+  # ============================================================
+  # SERVIÇO DO BANCO DE DADOS EM MEMÓRIA REDIS
+  # ============================================================
+
+  # Nome do serviço Redis.
+  # Esse nome também será utilizado como hostname pelos outros
+  # containers da mesma rede Docker.
+  redis:
+
+    # Imagem Docker utilizada para criar o container.
+    # Neste caso, utiliza o Rediz na versão 7.0.
+    image: redis:7-alpine
+
+    # Define o nome do container.
+    # O container poderá ser identificado pelo nome "redis".
+    container_name: redis
+
+    # Define o comportamento do container caso ele seja encerrado.
+    # "unless-stopped" reinicia automaticamente o container,
+    # exceto quando ele tiver sido parado manualmente.
+    restart: unless-stopped
+
+    # Mapeamento das portas entre o computador e o container.
+    ports:
+
+      # Porta 6379 do computador -> porta 6379 do container.
+      #
+      # A porta 6379 é a porta padrão utilizada pelo protocolo
+      # Redis.
+      - "6379:6379"
+
+    # Define as redes às quais o container estará conectado.
+    networks:
+
+      # Conecta o Redis à rede "rede_cliente".
+      #
+      # Outros containers conectados à mesma rede poderão
+      # acessar o Redis utilizando o hostname "redis".
+      - rede_cliente
+
+  # ============================================================
+  # SERVIÇO DA APLICAÇÃO JAVA
+  # ============================================================
+
+  # Nome do serviço que executará a aplicação Java.
+  app:
+
+    # Imagem Docker utilizada para executar a aplicação.
+    #
+    # Tomcat 9.0 com JDK 8 é utilizado como servidor de
+    # aplicações Java Web.
+    image: tomcat:9.0-jdk8
+
+    # Nome do container que executará a aplicação.
+    container_name: contadoracessow_java_docker
+
+    # Reinicia automaticamente o container caso ele seja
+    # encerrado inesperadamente.
+    restart: unless-stopped
+
+    # Define os volumes utilizados pela aplicação.
+    volumes:
+
+      # Mapeia o arquivo WAR gerado pelo Maven no computador
+      # para o diretório de aplicações do Tomcat dentro
+      # do container.
+      #
+      # O arquivo WAR local:
+      # ./target/ccontadoracessow_java_docker-0.0.1.war
+      #
+      # será disponibilizado no container como:
+      # /usr/local/tomcat/webapps/ROOT.war
+      #
+      # O nome ROOT.war faz com que a aplicação seja
+      # disponibilizada diretamente na raiz do Tomcat.
+      - ./target/contadoracessow_java_docker-0.0.1.war:/usr/local/tomcat/webapps/ROOT.war
+
+    # Mapeamento das portas entre o computador e o container.
+    ports:
+
+      # Porta 8080 do computador -> porta 8080 do Tomcat.
+      #
+      # Assim, a aplicação poderá ser acessada através de:
+      # http://localhost:8080
+      - "8080:8080"
+
+    # Define dependências entre os serviços.
+    depends_on:
+
+      # Determina que o container MySQL deve ser iniciado
+      # antes do container da aplicação.
+      #
+      # IMPORTANTE:
+      # Isso não garante que o Redis esteja totalmente pronto
+      # para aceitar conexões. Apenas estabelece a ordem de
+      # inicialização dos containers.
+      - redis
+
+    # Conecta a aplicação à mesma rede utilizada pelo Redis.
+    #
+    # Isso permite que a aplicação encontre o banco de dados
+    # utilizando o hostname "redis".
+    networks:
+      - rede_cliente
+
+# ==============================================================
+# REDES
+# ==============================================================
+
+# Declara as redes utilizadas pelos serviços.
+networks:
+
+  # Nome da rede Docker que será utilizada pela aplicação,
+  # e pelo banco de dados em memória Redis.
+  rede_cliente:
+
+    # Define o tipo de driver utilizado pela rede.
+    #
+    # O driver "bridge" cria uma rede virtual que permite
+    # a comunicação entre os containers conectados a ela.
+    driver: bridge
