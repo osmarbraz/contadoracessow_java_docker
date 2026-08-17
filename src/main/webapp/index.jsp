@@ -5,7 +5,7 @@
     </head>
     <body>
         <h1>Contador</h1>
-        <a href="/servlet/Contador">
+        <a href="servlet/Contador">
             Abrir contador
         </a>        
     </body>
