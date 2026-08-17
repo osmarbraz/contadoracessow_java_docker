@@ -17,7 +17,7 @@ Aplicação **Contador de Acesso WEB** desenvolvida em **Java** e executada em u
 ## Docker
  - Utilizer o terminal do Powershel em modo administrador.
 
-### Para criar os conteiner e os serviços
+### Para criar os conteiners e os serviços
  - docker compose up --build
 
 ### Parar os serviços
