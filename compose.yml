@@ -49,7 +49,6 @@ services:
   app:
 
     # Imagem Docker utilizada para executar a aplicação.
-    #
     image: contadoracessow_java_docker
         
     # Define as configurações necessárias para construir a imagem
