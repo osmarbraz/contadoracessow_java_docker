@@ -91,7 +91,7 @@ services:
     # Define dependências entre os serviços.
     depends_on:
 
-      # Determina que o container MySQL deve ser iniciado
+      # Determina que o container Redis deve ser iniciado
       # antes do container da aplicação.
       #
       # IMPORTANTE:
