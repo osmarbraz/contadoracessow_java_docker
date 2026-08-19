@@ -1,4 +1,4 @@
-# Define os serviços (containers) que farão parte da aplicação.
+# Define os serviços (containers) que fazem parte da aplicação.
 services:
 
   # ============================================================
