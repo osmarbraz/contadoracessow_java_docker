@@ -15,7 +15,7 @@ Aplicação **Contador de Acesso WEB** desenvolvida em **Java** e executada em u
 - Utiliza o **Redis 7** como banco de dados em memória da aplicação. 
 
 ## Docker
- - Utilizer o terminal do Powershel em modo administrador.
+ - Utilizar o terminal do Windows Powershel em modo administrador.
 
 ### Para criar os conteiners e os serviços
  - ```docker compose up --build```
