@@ -3,6 +3,7 @@
     <display-name>contadoracessow_java_docker</display-name>
     <description>Contador de Acesso WEB</description>
     
+    <!-- página inicial -->    
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
